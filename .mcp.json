@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "spyglasses": {
+      "type": "http",
+      "url": "${SPYGLASSES_MCP_URL:-https://www.spyglasses.io/api/mcp}"
+    }
+  }
+}

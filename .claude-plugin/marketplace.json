@@ -1,0 +1,17 @@
+{
+  "name": "spyglasses-skills",
+  "owner": {
+    "name": "Spyglasses",
+    "url": "https://www.spyglasses.io"
+  },
+  "metadata": {
+    "description": "Claude skills and an MCP connector for the Spyglasses AI Visibility platform — chat with your AI Visibility reports and site audits."
+  },
+  "plugins": [
+    {
+      "name": "spyglasses",
+      "source": "./",
+      "description": "Chat with your Spyglasses AI Visibility reports and site audits, and interpret their scores. Bundles the Spyglasses MCP connector."
+    }
+  ]
+}

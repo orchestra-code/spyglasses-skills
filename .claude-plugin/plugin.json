@@ -1,0 +1,12 @@
+{
+  "name": "spyglasses",
+  "description": "Chat with your Spyglasses AI Visibility reports and site audits, and interpret their scores.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Spyglasses",
+    "url": "https://www.spyglasses.io"
+  },
+  "homepage": "https://www.spyglasses.io",
+  "repository": "https://github.com/orchestra-code/spyglasses-skills",
+  "license": "MIT"
+}
