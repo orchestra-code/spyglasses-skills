@@ -1,7 +1,7 @@
 {
   "name": "spyglasses",
-  "description": "Chat with your Spyglasses AI Visibility reports and site audits, and interpret their scores.",
-  "version": "0.1.0",
+  "description": "Chat with your Spyglasses AI Visibility data — reports, site audits, projects, historical trends, citation intelligence, and AI placement scores.",
+  "version": "0.2.0",
   "author": {
     "name": "Spyglasses",
     "url": "https://www.spyglasses.io"

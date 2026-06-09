@@ -14,10 +14,9 @@ bundles:
 
 | Skill | What it does |
 | --- | --- |
-| `spyglasses-reports` | Read and act on AI Visibility reports and AI Site Readiness audits — share of voice, citations, per-dimension scores, and prioritized fixes. |
+| `spyglasses-reports` | Read and act on Spyglasses AI-visibility data — public reports and site audits, plus your account's projects, historical trends, message drift, citation intelligence, and AI placement (value/quality) scores. |
 
-More skills (AI Placement Value Score, analytics, Discovery queries) will be
-added here over time; they share the same MCP connector.
+More skills will be added here over time; they share the same MCP connector.
 
 ## Install (Claude Code)
 
@@ -38,8 +37,9 @@ Once connected:
 
 - **Token-scoped tools** work for any report by its public token (from the
   report's share URL).
-- **Org-scoped tools** (`list_my_organizations`, `list_reports`) use your
-  account's organization membership.
+- **Org- and property-scoped tools** (`list_my_organizations`, `list_reports`,
+  `list_properties`, and the project/metrics/citation/scoring tools) use your
+  account's membership. All account data is **read-only**.
 
 ## Use with Claude.ai / ChatGPT / other assistants
 
@@ -61,14 +61,28 @@ and give it a report's public token; it drives the right tools for you:
 - `competitor_gaps` — where competitors rank/are cited and the brand isn't
 - `audit_worst_pages` — surface and explain a site audit's weakest pages
 - `list_my_reports` — list your org's reports (uses your signed-in account)
+- `analyze_project` — summarize a project's progress, trends, and next moves
+- `track_message_drift` — how AI's description of a brand changes over time
+- `citation_mix_trends` — how the mix of sources AI cites shifts over time
+- `evaluate_publishers` — score and rank publishers by AI Placement Value
 
 ## MCP tools
 
-Token-scoped (pass a report `publicToken`): `get_ai_visibility_report`,
+**Reports (token-scoped** — pass a report `publicToken`): `get_ai_visibility_report`,
 `get_ai_visibility_recommendations`, `get_ai_visibility_grounding`,
 `get_ai_visibility_citations`, `get_site_audit_summary`,
 `list_site_audit_pages`, `get_site_audit_page`.
-Org-scoped (uses your signed-in account): `list_my_organizations`, `list_reports`.
+
+**Account / organization:** `list_my_organizations`, `list_reports`, `list_properties`.
+
+**Property-scoped** (pass a `propertyId` from `list_properties`): `list_projects`,
+`get_project_insights`, `get_metrics_history`, `get_consistency_history`,
+`get_message_tracking`, `get_answer_summaries`, `get_citation_intelligence`.
+
+**Scoring:** `score_publisher_value` (AIPVS), `score_placement_quality` (PQS).
+
+All account/property/scoring tools are read-only — nothing creates, edits, or
+spends credits.
 
 ## Local development & testing
 
