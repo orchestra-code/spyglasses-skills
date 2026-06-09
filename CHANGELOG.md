@@ -3,6 +3,15 @@
 All notable changes to the Spyglasses Claude plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.1]
+
+### Fixed
+- `spyglasses-reports` SKILL.md frontmatter: the `description` contained an
+  unquoted `": "` (colon-space), which YAML parses as a mapping value and
+  rejected the whole block. Rephrased so the description parses cleanly — fixes
+  the plugin frontmatter error and lets skill loaders (e.g. `npx skills add`)
+  read the skill's name and description.
+
 ## [0.2.0]
 
 ### Added

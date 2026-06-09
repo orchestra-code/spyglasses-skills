@@ -1,6 +1,6 @@
 ---
 name: spyglasses-reports
-description: Interpret and analyze Spyglasses AI-visibility data — public AI Visibility reports and AI Site Readiness audits (by share link/token), plus the signed-in user's account data: projects, historical metrics and trends, brand-message drift, citation mix over time, and AI Placement Value / Quality scores. Use when the user shares a Spyglasses report link or token, asks about their AI visibility / share of voice / citations / projects / trends over time, wants to track how AI describes their brand, or wants to score publishers or placements.
+description: Interpret and analyze Spyglasses AI-visibility data — public AI Visibility reports and AI Site Readiness audits (by share link/token), plus the signed-in user's account data such as projects, historical metrics and trends, brand-message drift, citation mix over time, and AI Placement Value / Quality scores. Use when the user shares a Spyglasses report link or token, asks about their AI visibility, share of voice, citations, projects, or trends over time, wants to track how AI describes their brand, or wants to score publishers or placements.
 ---
 
 # Spyglasses
