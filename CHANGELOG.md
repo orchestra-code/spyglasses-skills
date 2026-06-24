@@ -3,6 +3,21 @@
 All notable changes to the Spyglasses Claude plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.0]
+
+### Added
+- **`citation-optimizer` skill** + MCP tools for the AI Citation Optimizer's
+  score → revise → re-score authoring loop (ChatGPT pipeline):
+  - `match_pages_for_fanout` — rank a property's pages against a query by content.
+  - `score_citation_pipeline` — score a page/URL/draft (fire-and-poll, returns a runId).
+  - `get_pipeline_run` — status, gate recommendations, and a **readiness verdict**
+    (`publish_ready` / `revise_again` / `plateaued`) with an explicit STOP signal so
+    an assistant terminates the loop instead of revising indefinitely.
+  - `revise_content` — generate a meaning-preserving, template-grounded revision
+    (fire-and-poll, returns a revisionId).
+  - `get_revision` — the revised markdown + meta + JSON-LD + a traceable change log.
+  - `rescore_revision` — re-score the revision as a new draft run to confirm the gain.
+
 ## [0.2.1]
 
 ### Fixed

@@ -30,7 +30,7 @@ scored individually; the summary aggregates them and flags priority issues.
 ### Per-page detail (`get_site_audit_page`)
 - **Findings** — specific issues with severity (`high`/`medium`/`low`), status (`red`/`yellow`/`green`), and a recommendation.
 - **Technical metrics** — performance (TTFB, HTML size), token counts, content stats.
-- **Chunk / citation-readiness analysis** — how the page splits into citable chunks: chunk quality score, the best self-contained chunk, **structural deserts** (long stretches with no headings/structure), and 128-token window alignment. Structural deserts are a common, high-impact fix.
+- **Chunk / citation-readiness analysis** — how the page splits into citable chunks: chunk quality score, the best self-contained chunk, **structural deserts** (long stretches with no headings/structure), and token window alignment. Structural deserts are a common, high-impact fix.
 
 ### Status bands
 Scores map to red / yellow / green bands. Treat **red** items as priority fixes,

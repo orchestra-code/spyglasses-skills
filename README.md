@@ -3,6 +3,8 @@
 A set of Claude skills (and an MCP connector) for interacting with the
 [Spyglasses](https://www.spyglasses.io) AI Visibility platform.
 
+[![skills.sh](https://skills.sh/b/orchestra-code/spyglasses-skills)](https://skills.sh/orchestra-code/spyglasses-skills)
+
 This repo is a **Claude Code plugin marketplace**. The `spyglasses` plugin
 bundles:
 
@@ -15,6 +17,7 @@ bundles:
 | Skill | What it does |
 | --- | --- |
 | `spyglasses-reports` | Read and act on Spyglasses AI-visibility data — public reports and site audits, plus your account's projects, historical trends, message drift, citation intelligence, and AI placement (value/quality) scores. |
+| `citation-optimizer` | Run the AI Citation Optimizer's score → revise → re-score loop: score a page/URL/draft against a fan-out query, generate a meaning-preserving revision that addresses what the scorer flagged, and re-score to confirm the gain — stopping when the content is publish-ready. |
 
 More skills will be added here over time; they share the same MCP connector.
 
@@ -112,6 +115,17 @@ To exercise the full marketplace + install flow against a local checkout:
 ```
 
 See `.env.example` for the variables. Never commit a real dev URL.
+
+> **Don't run the production and dev connectors at once.** Both report the same
+> MCP server name and expose overlapping tool names (the dev endpoint is a
+> superset of prod), so enabling both in one conversation collides. On Claude.ai,
+> add the dev endpoint as a separate, distinctly-named connector (e.g.
+> `Spyglasses (dev)`) and toggle connectors per conversation; in Claude Code,
+> disable the installed `spyglasses` plugin while `--plugin-dir .` is active. The
+> dev MCP host must be a stable public HTTPS origin and the dev server's
+> `NEXT_PUBLIC_SITE_URL` must match it, or OAuth discovery fails. See the
+> monorepo `README.md` → "Testing the MCP server & skills locally" for the full
+> walkthrough.
 
 ## Releasing
 
