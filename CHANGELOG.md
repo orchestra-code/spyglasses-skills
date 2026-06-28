@@ -3,6 +3,25 @@
 All notable changes to the Spyglasses Claude plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.4.0]
+
+### Added
+- **Context-first entry points for the citation optimizer** — new MCP tools so an
+  assistant can start the score → revise → re-score loop from a specific page or a
+  PR placement, not just from a fan-out query:
+  - `list_property_pages` — list/search a property's pages (id, path, title, tags)
+    to resolve a page the user names ("optimize my pricing page") to a
+    `propertyPageId`. The **page-first** path.
+  - `list_placements` — list a property's PR placements (with a `hasContent` flag).
+  - `get_placement` — read a placement's content + title/url to score it as a
+    `draftMarkdown` (use `pageType: "press_release"`). The **placement-first** path
+    ("score and revise this placement I'm working on").
+
+### Changed
+- `citation-optimizer` SKILL.md documents the three entry points (fan-out-first,
+  page-first, placement-first), the new tools, and that placements score fine
+  without a meta title/description.
+
 ## [0.3.0]
 
 ### Added

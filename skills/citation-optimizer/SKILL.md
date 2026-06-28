@@ -38,6 +38,26 @@ Scoring and revising run as **background jobs**, so those tools return an id imm
 the matching `get_*` tool every few seconds until `status` is terminal (`completed`/`stopped` for
 runs; `completed`/`failed` for revisions).
 
+## Where to start — three entry points
+
+The loop above is the **fan-out-first** path. But users often arrive with a *specific thing* in
+hand. All three paths converge on the same `score_citation_pipeline → revise → re-score` loop; only
+the way you pick the source + query differs.
+
+- **Fan-out-first** — *"optimize for this query / fix my visibility on this fan-out."*
+  `list_tracked_fanouts` → `match_pages_for_fanout` → score the closest page. (The default loop.)
+- **Page-first** — *"make this page more citable" / "optimize my pricing page."* The user names a
+  page, not a query. Use `list_property_pages(propertyId, search?)` to resolve it to a
+  `propertyPageId`. You still need a query (the pipeline can't score without one — Gate 4/SERP and
+  Gate 6/rerank are query-relative): offer `list_tracked_fanouts` to pick the fan-out this page
+  should target, or take a keyword the user names. Then score with that `propertyPageId`.
+- **Placement-first** — *"score and revise this PR placement I'm working on."* Use
+  `list_placements(propertyId)` to find it, then `get_placement(placementId)` to read its `content`.
+  Score that content as `draftMarkdown` with `pageType: "press_release"` (pass the placement title
+  as `metaTitle` if useful — optional). A PR placement won't have a meta title/description and that's
+  fine: the scorer runs without them, just skipping the SERP-snippet sub-score. You still pick a
+  fan-out/query to score against (tracked or user-named).
+
 ### Scoring can take several minutes — set expectations and offer to notify
 
 A scoring run has one inherently slow step. Most gates finish in seconds, but the rerank step
@@ -80,6 +100,17 @@ reranker cold start. Stop polling when `status` is terminal (`completed`/`stoppe
 - `match_pages_for_fanout(propertyId, fanOutQuery)` — synchronous. Ranks the property's pages by
   full-content similarity to the chosen fan-out. Use it to optimize the *closest* page; two of the
   user's pages competing for one citation helps neither.
+- `list_property_pages(propertyId, search?)` — synchronous. Lists the property's pages (id, path,
+  title, intent tags), optionally filtered by a search term. Use it for the **page-first** path —
+  when the user names a page rather than a query — to resolve it to a `propertyPageId`. (When you
+  have a fan-out, prefer `match_pages_for_fanout`, which ranks by relevance to that query.)
+- `list_placements(propertyId)` — synchronous. Lists the property's PR placements (id, title, url,
+  status, mode, PQS score, `hasContent`). The entry point for the **placement-first** path; pick one
+  with `hasContent: true`.
+- `get_placement(placementId)` — synchronous. Reads a placement's `content` (article markdown, or
+  prospective sample text) + title/url. Feed `content` to `score_citation_pipeline` as
+  `draftMarkdown` (use `pageType: "press_release"`; pass the title as `metaTitle` if useful —
+  optional). This is how you score & revise a placement.
 - `score_citation_pipeline(propertyId, fanOutQuery, {propertyPageId | url | draftMarkdown}, pageType?, groundingSearchId?)`
   — enqueue scoring; returns `runId`. Provide exactly one content source. **When the fan-out came
   from `list_tracked_fanouts`, pass its `groundingSearchId`** — this marks the query as a verified
@@ -153,3 +184,20 @@ if not publish-ready by then, hand back the best version and explain what still 
    show the user the change log → `rescore_revision(revisionId)` → poll the new run.
 6. Repeat step 5 until `publish_ready` or `plateaued` (or the 2–3 pass cap), then present the final
    revised markdown + meta + JSON-LD and tell the user to publish it.
+
+### Page-first variant (user names a page, not a query)
+
+1. `list_property_pages(propertyId, search)` → resolve the named page to a `propertyPageId`.
+2. `list_tracked_fanouts(propertyId)` → help them pick the fan-out this page should target (or take
+   a keyword they name). A query is required — the score is always relative to one.
+3. `score_citation_pipeline(propertyId, query, { propertyPageId }, groundingSearchId?)` → then the
+   normal score → revise → re-score loop.
+
+### Placement-first variant (score & revise a PR placement)
+
+1. `list_placements(propertyId)` → pick the placement (`hasContent: true`).
+2. `get_placement(placementId)` → read its `content`.
+3. Pick a fan-out/query (`list_tracked_fanouts`, or a keyword the user names).
+4. `score_citation_pipeline(propertyId, query, { draftMarkdown: <content> }, pageType: "press_release", metaTitle: <title?>, groundingSearchId?)`
+   → then the normal loop. Don't worry about meta title/description — placements rarely have them
+   and the scorer handles their absence.
