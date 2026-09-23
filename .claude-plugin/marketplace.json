@@ -11,7 +11,7 @@
     {
       "name": "spyglasses",
       "source": "./",
-      "description": "Chat with your Spyglasses AI Visibility reports and site audits, and interpret their scores. Bundles the Spyglasses MCP connector."
+      "description": "Chat with your Spyglasses AI Visibility reports and site audits, interpret their scores, and run the AI Citation Optimizer's audit loop across ChatGPT, Google AI Overviews, Google AI Mode and Claude. Bundles the Spyglasses MCP connector."
     }
   ]
 }

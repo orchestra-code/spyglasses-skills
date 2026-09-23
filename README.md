@@ -17,7 +17,7 @@ bundles:
 | Skill | What it does |
 | --- | --- |
 | `spyglasses-reports` | Read and act on Spyglasses AI-visibility data — public reports and site audits, plus your account's projects, historical trends, message drift, citation intelligence, and AI placement (value/quality) scores. |
-| `citation-optimizer` | Run the AI Citation Optimizer's score → revise → re-score loop: score a page/URL/draft against a fan-out query, generate a meaning-preserving revision that addresses what the scorer flagged, and re-score to confirm the gain — stopping when the content is publish-ready. |
+| `citation-optimizer` | Run the AI Citation Optimizer's audit loop. Score a page, URL or draft against a whole set of searches on ChatGPT, Google AI Overviews, Google AI Mode and Claude at once, read the harmonized findings, generate a meaning-preserving rewrite, and re-score to confirm the lift, stopping when the content is publish-ready. Also briefs a page that does not exist yet from a single keyword. |
 
 More skills will be added here over time; they share the same MCP connector.
 
@@ -42,7 +42,10 @@ Once connected:
   report's share URL).
 - **Org- and property-scoped tools** (`list_my_organizations`, `list_reports`,
   `list_properties`, and the project/metrics/citation/scoring tools) use your
-  account's membership. All account data is **read-only**.
+  account's membership. Reporting and analytics create, edit and spend nothing.
+  The citation optimizer tools do write, all inside your own account: they create
+  scoring runs, **draft** rewrites and briefs. They never publish anything and
+  never touch a live page.
 
 ## Use with Claude.ai / ChatGPT / other assistants
 
@@ -84,8 +87,20 @@ and give it a report's public token; it drives the right tools for you:
 
 **Scoring:** `score_publisher_value` (AIPVS), `score_placement_quality` (PQS).
 
-All account/property/scoring tools are read-only — nothing creates, edits, or
-spends credits.
+**Citation Optimizer** (property-scoped): `list_tracked_fanouts`,
+`match_pages_for_fanout`, `list_property_pages`, `list_placements`,
+`get_placement`, `score_citation_audit`, `get_citation_audit`,
+`reweight_citation_audit`, `revise_citation_audit`, `get_revision`,
+`rescore_revision`, `generate_citation_outline`, `get_citation_outline`, plus the
+legacy single-query shape `score_citation_pipeline`, `get_pipeline_run` and
+`revise_content`.
+
+The reporting, account, property and scoring tools create, edit and spend nothing.
+The citation optimizer is the exception. Scoring is free of credits but counts
+against a monthly **page** allowance (a page counts once a month however often it
+is re-run, and re-scoring a rewrite never counts); `revise_citation_audit`,
+`revise_content` and `generate_citation_outline` produce drafts and **spend
+credits**; `reweight_citation_audit` is free. Nothing is ever published.
 
 ## Local development & testing
 

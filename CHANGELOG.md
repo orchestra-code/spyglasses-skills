@@ -3,6 +3,57 @@
 All notable changes to the Spyglasses Claude plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.5.0]
+
+### Added
+- **The audit loop** for the citation optimizer. Scoring is no longer one query on
+  one assistant: an audit scores one page against a whole **query set** on every
+  assistant the plan covers (ChatGPT, Google AI Overviews, Google AI Mode, Claude)
+  and harmonizes four sets of findings into one score and one list.
+  - `score_citation_audit`, which scores a page, URL, or draft against a query set on
+    several assistants (fire-and-poll, returns an `auditId`). Each query carries a
+    `provenance` label (`tracked` / `freetext` / `generated_unverified`) that
+    survives into the score, the rewrite and every screen.
+  - `get_citation_audit`, the poll target. It returns the combined score **with the range it
+    is measured within**, each assistant's own score and checks, the merged
+    recommendation list (`consensus` / `platformSpecific` / `conflict`, conflicts
+    carrying a `resolution.allocations`), the readiness verdict, and the monthly
+    page `usage`.
+  - `revise_citation_audit`, a rewrite grounded in every assistant's findings at
+    once, conflicts resolved by allocation rather than by averaging. Spends credits.
+  - `reweight_citation_audit`, which changes how much each assistant counts toward the
+    combined score. Free, instant, uses no page, and the readiness verdict
+    recomputes with the weights.
+  - `regressed`, a fifth readiness verdict. A rewrite that made any single
+    assistant meaningfully worse is held back and the previous version offered,
+    even when the combined score held up.
+- **Keyword briefs**, the step before the page exists.
+  - `generate_citation_outline`, which turns a keyword and a page type into a
+    section-by-section brief with per-section target searches, word budgets,
+    must-include terms and quotable-passage rules. Spends credits.
+  - `get_citation_outline`, the poll target, including the searches the brief was
+    built for with their provenance labels and what none of the ranking pages answers.
+
+### Changed
+- `citation-optimizer` SKILL.md rewritten around the audit loop: the query set and
+  its provenance rules, the grouped recommendations, the five STOP verdicts,
+  re-weighting, the outline flow, and how to read a score that comes with a range.
+- `rescore_revision` now follows whatever the revision came from and returns a
+  `kind` of `"audit"` or `"run"`; read it to know which poll target to use.
+- The single-run loop (`score_citation_pipeline`, `get_pipeline_run`,
+  `revise_content`) is documented as the legacy shape and the one the free plan
+  gets. It still works unchanged.
+- Metering is documented: scoring costs no credits but counts distinct **pages** per
+  month per organization. A page counts once however many times it is re-run,
+  re-scoring a rewrite and re-weighting never count, and over the cap the tools
+  refuse with `usage` (`used`, `cap`, `remaining`, `enforced`). Rewrites and briefs
+  spend credits from a shared monthly allowance.
+- Performance note updated: an audit runs the pipelines in parallel, and the
+  reranker cold start on Replicate can still take a few minutes on the first run of
+  a quiet period. Poll every 10 to 15 seconds and never treat a run sitting on the
+  relevance check as failed.
+- Plugin description now names the four assistants and the audit loop.
+
 ## [0.4.0]
 
 ### Added
