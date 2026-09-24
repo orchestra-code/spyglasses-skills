@@ -51,6 +51,14 @@ If a token isn't available, every report also serves a Markdown snapshot at
 - `score_publisher_value` — **AI Placement Value Score (AIPVS, 0–100)** for one or more publisher domains: how valuable a citation from that domain is for AI visibility. Pass `propertyId` to score in a brand's context (category relevance + uplift), or omit it to score in general. Returns score, tier, AI impact multiplier, per-layer detail, and `needsEnrichment`.
 - `score_placement_quality` — **AI Placement Quality Score (PQS, 0–100)** for a prospective placement (type, position, editorial control, link attribute). Pass `publisherDomain` (and optionally `propertyId`) to also get the publisher's AIPVS and the combined **total placement value** (AIPVS × PQS ÷ 100).
 
+## Pitch list tools (publisher target lists)
+
+A pitch list is a named list of publishers a PR team plans to pitch, per property or per organization. Rows carry Est. Traffic, DataForSEO Domain Rank (a third-party reference, not an AIPVS input), the AIPVS tier, how often AI cited the publisher for the brand's tracked prompts in a window, a status (Target / Pitched / Placed / Declined) and a note.
+
+- `list_pitch_lists` — the pitch lists for one property (`propertyId`) or the organization-level lists of one organization (`organizationId`); pass exactly one. Each row carries item, placed, brand and project-goal counts and whether the list is shared. Read-only.
+- `get_pitch_list` — one list's rows with publisher basics, brand, status, note, citation counts for the window (`window`: 30, 90 or 365 days, default 90), placements and the "suggest Placed" flag; `includeAipvs: true` scores each brand/domain pair; `limit` (default 200, max 500) pages large lists. Rows whose brand is a hidden scoring-only brand read "Not tracked"; rows with no brand count citations across every tracked brand in the organization. Read-only.
+- `add_pitch_list_publishers` — **writes inside the user's own account** and spends nothing: adds up to 200 domains (with an optional shared `note`) to a list given by `listId`, or by `name` within a `propertyId` or `organizationId` (finds an existing list by that name or creates it). Rows added to an organization list this way carry no brand. New publishers are looked up and scored in the background; poll `get_pitch_list` for scores.
+
 ## Recommended workflows
 
 **A report (token given):** call the matching `get_*` tool, lead with the headline numbers (overall score, or SOV + citation rate), then 3–5 grounded findings. For site audits, `list_site_audit_pages` sorted ascending by `overallScore`, then `get_site_audit_page` on the worst few.
@@ -62,6 +70,8 @@ If a token isn't available, every report also serves a Markdown snapshot at
 **Message drift:** `get_message_tracking` for the numeric pull-through trend, then `get_answer_summaries` (list queries → pick one → fetch its weekly answers) and compare the weekly answers yourself to narrate how the wording changes.
 
 **Scoring publishers:** `score_publisher_value` (pass `propertyId` for brand context). For a specific placement, `score_placement_quality`.
+
+**Building a pitch list:** score candidates with `score_publisher_value`, then save the ones worth pitching with `add_pitch_list_publishers` (confirm the list name with the user first, since it writes). Review the list with `get_pitch_list`, reading Domain Rank as a familiar reference and the AIPVS tier as the AI-readiness signal, and treat rows AI already cites as the stronger targets.
 
 If a tool says you're not signed in, tell the user to complete the connector's OAuth sign-in.
 

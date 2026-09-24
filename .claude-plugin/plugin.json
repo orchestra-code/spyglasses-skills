@@ -1,7 +1,7 @@
 {
   "name": "spyglasses",
-  "description": "Chat with your Spyglasses AI Visibility data (reports, site audits, projects, historical trends, citation intelligence, AI placement scores) and run the AI Citation Optimizer's audit loop, scoring a page against a whole search set on ChatGPT, Google AI Overviews, Google AI Mode and Claude, rewriting it, and re-scoring until it is publish-ready.",
-  "version": "0.5.0",
+  "description": "Chat with your Spyglasses AI Visibility data (reports, site audits, projects, historical trends, citation intelligence, AI placement scores, pitch lists) and run the AI Citation Optimizer's audit loop, scoring a page against a whole search set on ChatGPT, Google AI Overviews, Google AI Mode and Claude, rewriting it, and re-scoring until it is publish-ready.",
+  "version": "0.6.0",
   "author": {
     "name": "Spyglasses",
     "url": "https://www.spyglasses.io"
