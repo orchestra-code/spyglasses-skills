@@ -84,3 +84,14 @@ Each cited source is classified along several axes (counts roll up into the brea
 - **Owner type** (of a citation source domain) — `brand` (the property's own domain), `competitor` (a tracked competitor), or `third_party`.
 
 `historicalData` is the trend series — one point per report/day with total/owned/listicle counts and per-axis breakdowns — use it to chart how the citation mix shifts over time. A high **listicle rate** or low **share of owned** signals AI leans on third-party roundups rather than the brand's own pages.
+
+## Pitch lists (`list_pitch_lists`, `get_pitch_list`, `add_pitch_list_publishers`)
+
+A **pitch list** holds publishers *before* the story runs (the outlets a PR team intends to pitch); a coverage group holds placement URLs *after* it runs. Property lists belong to one brand; organization lists span an agency's clients and each row may name a brand or none.
+
+Per row: `publisher` (`name`, `organicEtv` = Est. Traffic, `domainRank` = DataForSEO Domain Rank 0–100, `aiPolicyStatus`, `enrichmentPending`), `brand` (organization lists), `status` (`TARGET` | `PITCHED` | `PLACED` | `DECLINED`), `statusChangedAt`, `note`, `citations` (`total`, `byPlatform`, `lastCitedAt`, `truncated`), `citationsTracked`, `placements`, `suggestPlaced`, and with `includeAipvs` an `aipvs` (`score`, `tier`, `tierLabel`).
+
+- **Domain Rank** is a backlink-based authority score from DataForSEO, shown beside Est. Traffic because PR teams know that shape (Domain Authority / Domain Rating). It is **not** part of AIPVS: a high Domain Rank site that blocks AI crawlers can still carry a low AIPVS.
+- **Citations** count answers from the brand's tracked prompts that cited a page on the publisher in the window (default 90 days). `citationsTracked: false` (and `citationsDisplay: "Not tracked"`) means the row's brand is a hidden scoring-only brand with no tracked prompts; rows with no brand count across every tracked brand in the organization. `truncated: true` means the count is a floor.
+- **`suggestPlaced`** is true when a scored placement on that publisher landed after the row was added while the row is still Target or Pitched; it never changes the status by itself.
+- **Sharing**: `shareIncludesDeclined` says whether the list's public share page shows Declined rows. The share token is never returned.

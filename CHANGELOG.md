@@ -3,6 +3,23 @@
 All notable changes to the Spyglasses Claude plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.6.0]
+
+### Added
+- **Pitch lists** in the `spyglasses-reports` skill: three MCP tools for publisher
+  target lists (per property or per organization).
+  - `list_pitch_lists`, the lists for a property or an organization, with item,
+    placed, brand and project-goal counts.
+  - `get_pitch_list`, one list's rows: publisher basics (Est. Traffic, DataForSEO
+    Domain Rank, AI policy), brand, status, note, citation counts for a 30/90/365-day
+    window, placements, the "suggest Placed" flag, and optional AIPVS per row.
+  - `add_pitch_list_publishers`, which **writes** inside the user's own account:
+    adds up to 200 domains to a list by id, or by name within a property or an
+    organization (creating the list when it does not exist). Spends nothing.
+- A "Building a pitch list" workflow and a reference section explaining Domain
+  Rank (a third-party reference, not an AIPVS input), citation counts and the
+  Not tracked case.
+
 ## [0.5.0]
 
 ### Added

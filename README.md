@@ -87,6 +87,9 @@ and give it a report's public token; it drives the right tools for you:
 
 **Scoring:** `score_publisher_value` (AIPVS), `score_placement_quality` (PQS).
 
+**Pitch lists:** `list_pitch_lists`, `get_pitch_list`, `add_pitch_list_publishers`
+(writes: adds publishers to a list in your own account, spends nothing).
+
 **Citation Optimizer** (property-scoped): `list_tracked_fanouts`,
 `match_pages_for_fanout`, `list_property_pages`, `list_placements`,
 `get_placement`, `score_citation_audit`, `get_citation_audit`,
